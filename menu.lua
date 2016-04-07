@@ -16,6 +16,7 @@ local composer = require( "composer" )
 local widget = require( "widget" )
 local display = require ("display")
 local slideView = require("WalkThroughPluginLibrary.slideView")
+local WalkThroughUtilities = require "WalkThroughPluginLibrary.WalkThroughUtilities"
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------------------------------------
@@ -31,12 +32,26 @@ local scene = composer.newScene()
 local function handleButtonEvent(event)
   if ( "ended" == event.phase ) then
       -- Calling the Show WalkThrough Screens
-      local myImages = {
-      	"WalkThroughPluginLibrary/Portrait/Objects/portrait-wakthrough1_bg.png",
-      	"WalkThroughPluginLibrary/Portrait/Objects/portrait-wakthrough2_bg.png",
-      	"WalkThroughPluginLibrary/Portrait/Objects/portrait-wakthrough3_bg.png"
-      }
-    slideView.new( myImages)
+      if WalkThroughUtilities.getOrientation() == "portrait" then
+
+        local myImages = {
+        	"WalkThroughPluginLibrary/Portrait/Objects/portrait-wakthrough1_bg.png",
+        	"WalkThroughPluginLibrary/Portrait/Objects/portrait-wakthrough2_bg.png",
+        	"WalkThroughPluginLibrary/Portrait/Objects/portrait-wakthrough3_bg.png"
+        }
+      slideView.new( myImages)
+
+      else
+
+        local myImages = {
+        	"WalkThroughPluginLibrary/LandScape/landscape-wakthrough1-bg.png",
+        	"WalkThroughPluginLibrary/LandScape/landscape-wakthrough2-bg.png",
+        	"WalkThroughPluginLibrary/LandScape/landscape-wakthrough3-bg.png"
+        }
+      slideView.new( myImages)
+
+      end
+
   end
 end
 
@@ -49,7 +64,6 @@ function scene:create( event )
     background:setFillColor(0,0,0)
     sceneGroup:insert(background)
 
-
     local showWalkThrough= widget.newButton(
     {
         left = display.contentCenterX / 2,
@@ -59,6 +73,7 @@ function scene:create( event )
         fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
         onEvent = handleButtonEvent
     })
+
     sceneGroup:insert(showWalkThrough)
     -- Initialize the scene here.
     -- Example: add display objects to "sceneGroup", add touch listeners, etc.

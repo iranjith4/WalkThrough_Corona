@@ -13,8 +13,8 @@
 -- Your code here
 
 local composer = require "composer"
-local WalkThrough = require "WalkThroughPluginLibrary.WalkThroughUtilities"
+local WalkThroughUtilities = require "WalkThroughPluginLibrary.WalkThroughUtilities"
 display.setStatusBar( display.HiddenStatusBar )
 
-WalkThrough.appLaunch()
+WalkThroughUtilities.appLaunch()
 composer.gotoScene("menu")

@@ -36,14 +36,23 @@ local images = nil
 local touchListener, nextImage, prevImage, cancelMove, initImage
 local background
 local imageNumberText, imageNumberTextShadow
-local g , dot1 , dot2 , dot3 , webView , showPerkPointsIcon
-
+local g , dot1 , dot2 , dot3 , webView , showPerkPointsIcon  , login_text_authentication , facebook_authentication , buttontext
+local dot_size_fix = 0.04
 
 local dots_y_coordinate = display.contentHeight * 0.72
 if (WalkThroughUtilities.detectDeviceType() == "iPad") then
   dots_y_coordinate = display.contentHeight * 0.68
 end
-
+if (WalkThroughUtilities.getOrientation() == "landscape")  then
+  print( "This Section Called -- > iPhone rest" )
+  if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
+    dots_y_coordinate = display.contentHeight * 0.67
+    dot_size_fix = 0.026
+  else
+    dots_y_coordinate = display.contentHeight * 0.63
+    dot_size_fix = 0.03
+  end
+end
 
 function goToAppsaholicPortal(event)
     if ( event.phase == "began" ) then
@@ -72,7 +81,7 @@ function new( imageSet, slideBackground, top, bottom )
 		background.anchorX = 0
 		background.anchorY = 0
 
-		background:setFillColor(0,0,0,0.9)
+		background:setFillColor(0.1,0.1,0.1)
 	end
 	g:insert(background)
 
@@ -84,20 +93,35 @@ function new( imageSet, slideBackground, top, bottom )
 			if p.width/viewableScreenW > p.height/h then
 
         if (system.getInfo( "platformName" ) == "Android") then
+          print( "This Section Called - > Android" )
           p.xScale = viewableScreenW/(p.width * 0.9)
           p.yScale = viewableScreenW/ (p.width * 0.9)
         else
-          if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
-            print( "This Section Called" )
-            p.xScale = viewableScreenW/(p.width  )
-            p.yScale = viewableScreenW/ (p.width )
+
+          if WalkThroughUtilities.getOrientation() == "portrait" then
+            print( "This Section Called -- > iPhone rest" )
+            if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
+              print( "This Section Called -- > iPad and iPhone 4s" )
+              p.xScale = viewableScreenW/(p.width  )
+              p.yScale = viewableScreenW/ (p.width )
+            else
+              p.xScale = viewableScreenW/(p.width * 0.84)
+              p.yScale = viewableScreenW/ (p.width * 0.84)
+            end
           else
-            p.xScale = viewableScreenW/(p.width * 0.84)
-            p.yScale = viewableScreenW/ (p.width * 0.84)
+            print( "This Section Called -- > iPhone rest LansScape" )
+            if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
+              print( "This Section Called -- > iPad and iPhone 4s LansScape Width and height Scaling" )
+              p.xScale = h/(p.height * 1.42)
+              p.yScale = h/(p.height * 1.42)
+            else
+              p.xScale = h/(p.height * 1.25)
+              p.yScale = h/(p.height * 1.25)
+            end
           end
         end
 			else
-        print( "This Section Called Rest" )
+          print( "This Section Called Rest -> lanscape" )
 					p.xScale = h/p.height
 					p.yScale = h/p.height
 			end
@@ -105,76 +129,127 @@ function new( imageSet, slideBackground, top, bottom )
 		g:insert(p)
 
 		if (i > 1) then
-			p.x = screenW*1.4 + pad -- all images offscreen except the first one
+      p.x = screenW*1.6 + pad -- all images offscreen except the first one
 		else
 			p.x = screenW*.5
 		end
-
-		p.y = h*.38
-
+    if WalkThroughUtilities.getOrientation() == "portrait" then
+      print( "This Section Called -- > iPhone rest" )
+      p.y = h*.38
+    else
+      print( "This Section Called -- > iPhone rest LansScape" )
+      if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
+        print( "This Section Called -- > iPad and iPhone 4s LansScape Width and height Scaling" )
+        p.y = h*.35
+      else
+        p.y = h*.39
+      end
+    end
 		images[i] = p
 	end
 
 	local defaultString = "1 of " .. #images
 
-	local buttontext
     if WalkThroughUtilities.getOrientation() == "portrait" then
       buttontext = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_signup_text.png")
+      buttontext.height = WalkThroughUtilities.getNewHeight(buttontext,display.contentWidth * 0.8)
+      buttontext.width = display.contentWidth * 0.8
+      buttontext.x = display.contentWidth / 2
+      buttontext.y = display.contentHeight * 0.8
+      if (WalkThroughUtilities.detectDeviceType() == "iPad") then
+        buttontext.height = WalkThroughUtilities.getNewHeight(buttontext,display.contentWidth * 0.7)
+        buttontext.width = display.contentWidth * 0.7
+        buttontext.y = display.contentHeight * 0.745
+      end
     else
 			buttontext = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_signup_text.png")
+      buttontext.height = WalkThroughUtilities.getNewHeight(buttontext,display.contentWidth * 0.53)
+      buttontext.width = display.contentWidth * 0.53
+      buttontext.x = display.screenOriginX + buttontext.width * 0.55
+      buttontext.y = display.contentHeight * 0.72
+      if ( WalkThroughUtilities.getScreenHeight() == 960) then
+        buttontext.height = WalkThroughUtilities.getNewHeight(buttontext,display.contentWidth * 0.53)
+        buttontext.width = display.contentWidth * 0.53
+        buttontext.y = display.contentHeight * 0.8
+      end
+      if (WalkThroughUtilities.detectDeviceType() == "iPad") then
+        buttontext.height = WalkThroughUtilities.getNewHeight(buttontext,display.contentWidth * 0.47)
+        buttontext.width = display.contentWidth * 0.47
+        buttontext.x = display.screenOriginX + buttontext.width * 0.54
+        buttontext.y = display.contentHeight * 0.83
+      end
     end
-    buttontext.height = WalkThroughUtilities.getNewHeight(buttontext,display.contentWidth * 0.8)
-    buttontext.width = display.contentWidth * 0.8
-    buttontext.x = display.contentWidth / 2
-    buttontext.y = display.contentHeight * 0.8
-    if (WalkThroughUtilities.detectDeviceType() == "iPad") then
-      buttontext.height = WalkThroughUtilities.getNewHeight(buttontext,display.contentWidth * 0.7)
-      buttontext.width = display.contentWidth * 0.7
-      buttontext.y = display.contentHeight * 0.745
-    end
+
     g:insert(buttontext)
 		popupHeight = popupHeight + buttontext.y +  buttontext.height
 
-		local facebook_authentication
+
     if WalkThroughUtilities.getOrientation() == "portrait" then
       facebook_authentication = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_button_facebook.png")
+
+      facebook_authentication.height = WalkThroughUtilities.getNewHeight(facebook_authentication,display.contentWidth * 0.7)
+      facebook_authentication.width = display.contentWidth * 0.7
+      facebook_authentication.x = display.contentWidth / 2
+      if (system.getInfo( "platformName" ) == "Android") then
+        facebook_authentication.y = popupHeight + facebook_authentication.height * 0.18
+      else
+        facebook_authentication.y = popupHeight + facebook_authentication.height * 0.2
+        if (WalkThroughUtilities.detectDeviceType() == "iPad") then
+          facebook_authentication.height = WalkThroughUtilities.getNewHeight(facebook_authentication,display.contentWidth * 0.55)
+          facebook_authentication.width = display.contentWidth * 0.55
+          facebook_authentication.y = popupHeight + facebook_authentication.height * 0.08
+        end
+      end
     else
-			facebook_authentication = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_button_facebook.png")
-    end
-    facebook_authentication.height = WalkThroughUtilities.getNewHeight(facebook_authentication,display.contentWidth * 0.7)
-    facebook_authentication.width = display.contentWidth * 0.7
-    facebook_authentication.x = display.contentWidth / 2
-    if (system.getInfo( "platformName" ) == "Android") then
-      facebook_authentication.y = popupHeight + facebook_authentication.height * 0.18
-    else
-      facebook_authentication.y = popupHeight + facebook_authentication.height * 0.2
-      if (WalkThroughUtilities.detectDeviceType() == "iPad") then
-        facebook_authentication.height = WalkThroughUtilities.getNewHeight(facebook_authentication,display.contentWidth * 0.55)
-        facebook_authentication.width = display.contentWidth * 0.55
-        facebook_authentication.y = popupHeight + facebook_authentication.height * 0.08
+			facebook_authentication = display.newImage("WalkThroughPluginLibrary/LandScape/landscape-button-facebook@3x.png")
+      facebook_authentication.height = WalkThroughUtilities.getNewHeight(facebook_authentication,display.contentWidth * 0.4)
+      facebook_authentication.width = display.contentWidth * 0.4
+      if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
+
+        facebook_authentication.x = display.contentWidth / 2 + facebook_authentication.width * 0.7
+        facebook_authentication.y = display.contentHeight -  facebook_authentication.height * 1.1
+
+        if (WalkThroughUtilities.detectDeviceType() == "iPad") then
+
+          facebook_authentication.height = WalkThroughUtilities.getNewHeight(facebook_authentication,display.contentWidth * 0.37)
+          facebook_authentication.width = display.contentWidth * 0.37
+          facebook_authentication.x = display.contentWidth / 2 + facebook_authentication.width * 0.67
+          facebook_authentication.y = display.contentHeight -  facebook_authentication.height * 1.1
+        end
+      else
+        facebook_authentication.x = display.contentWidth / 2 + facebook_authentication.width * 0.7
+        facebook_authentication.y = display.contentHeight -  facebook_authentication.height * 1.82
       end
     end
-
     g:insert(facebook_authentication)
 
-		local login_text_authentication
+
+
     if WalkThroughUtilities.getOrientation() == "portrait" then
       login_text_authentication = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_text_login.png")
+
+      login_text_authentication.height = WalkThroughUtilities.getNewHeight(login_text_authentication,display.contentWidth * 0.5)
+      login_text_authentication.width = display.contentWidth * 0.5
+      login_text_authentication.x = display.contentWidth / 2
+      if (system.getInfo( "platformName" ) == "Android") then
+        login_text_authentication.y = popupHeight + login_text_authentication.height * 4.5
+      else
+        login_text_authentication.y = popupHeight + login_text_authentication.height * 4.7
+        if (WalkThroughUtilities.detectDeviceType() == "iPad") then
+          login_text_authentication.y = popupHeight + login_text_authentication.height * 3
+        end
+      end
     else
 			login_text_authentication = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_text_login.png")
-    end
-    login_text_authentication.height = WalkThroughUtilities.getNewHeight(login_text_authentication,display.contentWidth * 0.5)
-    login_text_authentication.width = display.contentWidth * 0.5
-    login_text_authentication.x = display.contentWidth / 2
-    if (system.getInfo( "platformName" ) == "Android") then
-      login_text_authentication.y = popupHeight + login_text_authentication.height * 4.5
-    else
-      login_text_authentication.y = popupHeight + login_text_authentication.height * 4.7
-      if (WalkThroughUtilities.detectDeviceType() == "iPad") then
-        login_text_authentication.y = popupHeight + login_text_authentication.height * 3
+      login_text_authentication.height = WalkThroughUtilities.getNewHeight(login_text_authentication,display.contentWidth * 0.35)
+      login_text_authentication.width = display.contentWidth * 0.35
+      login_text_authentication.x = buttontext.x + login_text_authentication.height
+      if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
+        login_text_authentication.y = display.contentHeight - login_text_authentication.width * 0.18
+      else
+        login_text_authentication.y = display.contentHeight - login_text_authentication.width * 0.38
       end
     end
-
     g:insert(login_text_authentication)
 
 		--Event Listeners
@@ -187,8 +262,8 @@ function new( imageSet, slideBackground, top, bottom )
 	    else
 				dot1 = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_slider_button_active.png")
 	    end
-	    dot1.height = WalkThroughUtilities.getNewHeight(dot1,display.contentWidth * 0.04)
-	    dot1.width = display.contentWidth * 0.04
+	    dot1.height = WalkThroughUtilities.getNewHeight(dot1,display.contentWidth * dot_size_fix)
+	    dot1.width = display.contentWidth * dot_size_fix
 	    dot1.x = display.contentWidth / 2 - dot1.width * 2.7
 	    dot1.y = dots_y_coordinate
 	    g:insert(dot1)
@@ -198,8 +273,8 @@ function new( imageSet, slideBackground, top, bottom )
 	    else
 				dot2 = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_slider_button_inactive.png")
 	    end
-	    dot2.height = WalkThroughUtilities.getNewHeight(dot2,display.contentWidth * 0.04)
-	    dot2.width = display.contentWidth * 0.04
+	    dot2.height = WalkThroughUtilities.getNewHeight(dot2,display.contentWidth * dot_size_fix)
+	    dot2.width = display.contentWidth * dot_size_fix
 	    dot2.x = display.contentWidth / 2
 	    dot2.y = dot1.y
 	    g:insert(dot2)
@@ -209,8 +284,8 @@ function new( imageSet, slideBackground, top, bottom )
 	    else
 				dot3 = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_slider_button_inactive.png")
 	    end
-	    dot3.height = WalkThroughUtilities.getNewHeight(dot3,display.contentWidth * 0.04)
-	    dot3.width = display.contentWidth * 0.04
+	    dot3.height = WalkThroughUtilities.getNewHeight(dot3,display.contentWidth * dot_size_fix)
+	    dot3.width = display.contentWidth * dot_size_fix
 	    dot3.x = display.contentWidth / 2 + dot1.width * 2.7
 	    dot3.y = dot1.y
 	    g:insert(dot3)
@@ -326,8 +401,8 @@ function new( imageSet, slideBackground, top, bottom )
 				else
           dot1 = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_slider_button_active.png")
 				end
-				dot1.height = WalkThroughUtilities.getNewHeight(dot1,display.contentWidth * 0.04)
-				dot1.width = display.contentWidth * 0.04
+				dot1.height = WalkThroughUtilities.getNewHeight(dot1,display.contentWidth * dot_size_fix)
+				dot1.width = display.contentWidth * dot_size_fix
 				dot1.x = display.contentWidth / 2 - dot1.width * 2.7
 				dot1.y = dots_y_coordinate
 				g:insert(dot1)
@@ -337,8 +412,8 @@ function new( imageSet, slideBackground, top, bottom )
 				else
           dot2 = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_slider_button_inactive.png")
 				end
-				dot2.height = WalkThroughUtilities.getNewHeight(dot2,display.contentWidth * 0.04)
-				dot2.width = display.contentWidth * 0.04
+				dot2.height = WalkThroughUtilities.getNewHeight(dot2,display.contentWidth * dot_size_fix)
+				dot2.width = display.contentWidth * dot_size_fix
 				dot2.x = display.contentWidth / 2
 				dot2.y = dot1.y
 				g:insert(dot2)
@@ -348,8 +423,8 @@ function new( imageSet, slideBackground, top, bottom )
 				else
           dot3 = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_slider_button_inactive.png")
 				end
-				dot3.height = WalkThroughUtilities.getNewHeight(dot3,display.contentWidth * 0.04)
-				dot3.width = display.contentWidth * 0.04
+				dot3.height = WalkThroughUtilities.getNewHeight(dot3,display.contentWidth * dot_size_fix)
+				dot3.width = display.contentWidth * dot_size_fix
 				dot3.x = display.contentWidth / 2 + dot1.width * 2.7
 				dot3.y = dot1.y
 				g:insert(dot3)
@@ -370,11 +445,18 @@ function new( imageSet, slideBackground, top, bottom )
           end
         end
 
-				webView = native.newWebView( display.contentCenterX, display.contentCenterY - 100, display.contentWidth * 0.83, display.contentHeight * 0.36 )
+        if WalkThroughUtilities.getOrientation() == "portrait" then
+		      webView = native.newWebView( display.contentCenterX, display.contentCenterY - 100, display.contentWidth * 0.83, display.contentHeight * 0.36 )
+		    else
+          if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
+            webView = native.newWebView( display.contentWidth - 138, display.contentCenterY - 43, display.contentWidth * 0.59, display.contentHeight * 0.52)
+          else
+            webView = native.newWebView( display.contentWidth - 138, display.contentCenterY - 50.2, display.contentWidth * 0.57, display.contentHeight * 0.495)
+          end
+		    end
 				webView:request(YOUTUBE_URL )
 				g:insert(webView)
         webView:addEventListener( "urlRequest", webListener )
-
 
         -- if WalkThroughUtilities.getOrientation() == "portrait" then
         --   showPerkPointsIcon = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_icon_point.png")
@@ -385,7 +467,7 @@ function new( imageSet, slideBackground, top, bottom )
         -- showPerkPointsIcon.width = display.contentWidth * 0.2
         -- showPerkPointsIcon.x = display.contentWidth - showPerkPointsIcon.width
         -- showPerkPointsIcon.y = display.contentWidth / 2 + showPerkPointsIcon.height
-        -- g2:insert(showPerkPointsIcon)
+        -- g:insert(showPerkPointsIcon)
         -- showPerkPointsIcon:toFront()
 
 			--Dots Image Presentation
@@ -394,8 +476,8 @@ function new( imageSet, slideBackground, top, bottom )
 		    else
           dot1 = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_slider_button_inactive.png")
 		    end
-		    dot1.height = WalkThroughUtilities.getNewHeight(dot1,display.contentWidth * 0.04)
-		    dot1.width = display.contentWidth * 0.04
+		    dot1.height = WalkThroughUtilities.getNewHeight(dot1,display.contentWidth * dot_size_fix)
+		    dot1.width = display.contentWidth * dot_size_fix
 		    dot1.x = display.contentWidth / 2 - dot1.width * 2.7
 		    dot1.y = dots_y_coordinate
 		    g:insert(dot1)
@@ -407,8 +489,8 @@ function new( imageSet, slideBackground, top, bottom )
 		    else
           dot2 = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_slider_button_active.png")
 		    end
-		    dot2.height = WalkThroughUtilities.getNewHeight(dot2,display.contentWidth * 0.04)
-		    dot2.width = display.contentWidth * 0.04
+		    dot2.height = WalkThroughUtilities.getNewHeight(dot2,display.contentWidth * dot_size_fix)
+		    dot2.width = display.contentWidth * dot_size_fix
 		    dot2.x = display.contentWidth / 2
 		    dot2.y = dot1.y
 		    g:insert(dot2)
@@ -418,8 +500,8 @@ function new( imageSet, slideBackground, top, bottom )
 		    else
           dot3 = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_slider_button_inactive.png")
 		    end
-		    dot3.height = WalkThroughUtilities.getNewHeight(dot3,display.contentWidth * 0.04)
-		    dot3.width = display.contentWidth * 0.04
+		    dot3.height = WalkThroughUtilities.getNewHeight(dot3,display.contentWidth * dot_size_fix)
+		    dot3.width = display.contentWidth * dot_size_fix
 		    dot3.x = display.contentWidth / 2 + dot1.width * 2.7
 		    dot3.y = dot1.y
 		    g:insert(dot3)
@@ -433,8 +515,8 @@ function new( imageSet, slideBackground, top, bottom )
 		    else
           dot1 = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_slider_button_inactive.png")
 		    end
-		    dot1.height = WalkThroughUtilities.getNewHeight(dot1,display.contentWidth * 0.04)
-		    dot1.width = display.contentWidth * 0.04
+		    dot1.height = WalkThroughUtilities.getNewHeight(dot1,display.contentWidth * dot_size_fix)
+		    dot1.width = display.contentWidth * dot_size_fix
 		    dot1.x = display.contentWidth / 2 - dot1.width * 2.7
 		    dot1.y = dots_y_coordinate
 		    g:insert(dot1)
@@ -444,8 +526,8 @@ function new( imageSet, slideBackground, top, bottom )
 		    else
           dot2 = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_slider_button_inactive.png")
 		    end
-		    dot2.height = WalkThroughUtilities.getNewHeight(dot2,display.contentWidth * 0.04)
-		    dot2.width = display.contentWidth * 0.04
+		    dot2.height = WalkThroughUtilities.getNewHeight(dot2,display.contentWidth * dot_size_fix)
+		    dot2.width = display.contentWidth * dot_size_fix
 		    dot2.x = display.contentWidth / 2
 		    dot2.y = dot1.y
 		    g:insert(dot2)
@@ -455,8 +537,8 @@ function new( imageSet, slideBackground, top, bottom )
 		    else
           dot3 = display.newImage("WalkThroughPluginLibrary/Portrait/portrait_slider_button_active.png")
 		    end
-		    dot3.height = WalkThroughUtilities.getNewHeight(dot3,display.contentWidth * 0.04)
-		    dot3.width = display.contentWidth * 0.04
+		    dot3.height = WalkThroughUtilities.getNewHeight(dot3,display.contentWidth * dot_size_fix)
+		    dot3.width = display.contentWidth * dot_size_fix
 		    dot3.x = display.contentWidth / 2 + dot1.width * 2.7
 		    dot3.y = dot1.y
 		    g:insert(dot3)
