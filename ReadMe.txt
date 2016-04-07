@@ -1,6 +1,6 @@
  
 How To Integrate : 
-1. Copy the WalkThroughPluginLibrary Folder from corona directory.
+1. Copy the WalkThroughPluginLibrary Folder to corona folder.
 
 2. Declare the header file : 
 	local slideView = require("WalkThroughPluginLibrary.slideView")
