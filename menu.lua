@@ -15,7 +15,6 @@
 local composer = require( "composer" )
 local widget = require( "widget" )
 local display = require ("display")
-local WalkThroughUtilities = require "WalkThroughPluginLibrary.WalkThroughUtilities"
 local slideView = require("WalkThroughPluginLibrary.slideView")
 local scene = composer.newScene()
 
@@ -60,9 +59,7 @@ function scene:create( event )
         fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
         onEvent = handleButtonEvent
     })
-
     sceneGroup:insert(showWalkThrough)
-    print(WalkThroughUtilities.getAppLaunchCount())
     -- Initialize the scene here.
     -- Example: add display objects to "sceneGroup", add touch listeners, etc.
 end

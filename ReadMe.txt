@@ -3,7 +3,6 @@ How To Integrate :
 1. Copy the WalkThroughPluginLibrary Folder from corona directory.
 
 2. Declare the header file : 
-	local WalkThroughUtilities = require "WalkThroughPluginLibrary.WalkThroughUtilities"
 	local slideView = require("WalkThroughPluginLibrary.slideView")
 
 3. Call the bellow when ever you want : 
