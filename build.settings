@@ -7,7 +7,7 @@ settings =
 {
 	orientation =
 	{
-		default = "landscapeLeft",
+		default = "landscapeRight",
 	--	supported = { "landscapeLeft","portrait", "landscapeRight" ,"portraitUpsideDown","landscapeLeft","faceUp","faceDown"}
 	},
 	excludeFiles =

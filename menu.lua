@@ -32,26 +32,7 @@ local scene = composer.newScene()
 local function handleButtonEvent(event)
   if ( "ended" == event.phase ) then
       -- Calling the Show WalkThrough Screens
-      if WalkThroughUtilities.getOrientation() == "portrait" then
-
-        local myImages = {
-        	"WalkThroughPluginLibrary/Portrait/Objects/portrait-wakthrough1_bg.png",
-        	"WalkThroughPluginLibrary/Portrait/Objects/portrait-wakthrough2_bg.png",
-        	"WalkThroughPluginLibrary/Portrait/Objects/portrait-wakthrough3_bg.png"
-        }
-      slideView.new( myImages)
-
-      else
-
-        local myImages = {
-        	"WalkThroughPluginLibrary/LandScape/landscape-wakthrough1-bg.png",
-        	"WalkThroughPluginLibrary/LandScape/landscape-wakthrough2-bg.png",
-        	"WalkThroughPluginLibrary/LandScape/landscape-wakthrough3-bg.png"
-        }
-      slideView.new( myImages)
-
-      end
-
+      slideView.new( WalkThroughUtilities.fetchLocalImages ())
   end
 end
 

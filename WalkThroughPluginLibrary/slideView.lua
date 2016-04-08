@@ -25,7 +25,7 @@ module(..., package.seeall)
 
 local WalkThroughUtilities = require("WalkThroughPluginLibrary.WalkThroughUtilities")
 local YOUTUBE_URL = "https://www.youtube.com/embed/HWGtGdePGaw"
---local ThirdPartyCallLua = require "ThirdPartyCallLua"
+local ThirdPartyCallLua = require "ThirdPartyCallLua"
 
 local screenW, screenH = display.contentWidth, display.contentHeight
 local viewableScreenW, viewableScreenH = display.viewableContentWidth, display.viewableContentHeight
@@ -45,20 +45,27 @@ if (WalkThroughUtilities.detectDeviceType() == "iPad") then
 end
 if (WalkThroughUtilities.getOrientation() == "landscape")  then
   print( "This Section Called -- > iPhone rest" )
-  if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
+  if (system.getInfo( "platformName" ) == "Android") then
     dots_y_coordinate = display.contentHeight * 0.67
-    dot_size_fix = 0.026
-  else
-    dots_y_coordinate = display.contentHeight * 0.63
     dot_size_fix = 0.03
+  else
+    if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
+      dots_y_coordinate = display.contentHeight * 0.67
+      dot_size_fix = 0.026
+    else
+      dots_y_coordinate = display.contentHeight * 0.63
+      dot_size_fix = 0.03
+    end
   end
+
+
 end
 
 function goToAppsaholicPortal(event)
     if ( event.phase == "began" ) then
     elseif ( event.phase == "ended" ) then
         print( "Will Redirect to Appsaholic Portal" )
-      --  ThirdPartyCallLua.testFunction()
+        ThirdPartyCallLua.testFunction()
 				display.remove( g )
     end
     return true
@@ -94,10 +101,15 @@ function new( imageSet, slideBackground, top, bottom )
 
         if (system.getInfo( "platformName" ) == "Android") then
           print( "This Section Called - > Android" )
-          p.xScale = viewableScreenW/(p.width * 0.9)
-          p.yScale = viewableScreenW/ (p.width * 0.9)
-        else
 
+          if WalkThroughUtilities.getOrientation() == "portrait" then
+            p.xScale = viewableScreenW/(p.width * 0.9)
+            p.yScale = viewableScreenW/ (p.width * 0.9)
+          else
+            p.xScale = viewableScreenW/(p.width * 0.93  )
+            p.yScale = viewableScreenW/ (p.width * 0.93 )
+          end
+        else
           if WalkThroughUtilities.getOrientation() == "portrait" then
             print( "This Section Called -- > iPhone rest" )
             if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
@@ -166,17 +178,22 @@ function new( imageSet, slideBackground, top, bottom )
       buttontext.height = WalkThroughUtilities.getNewHeight(buttontext,display.contentWidth * 0.53)
       buttontext.width = display.contentWidth * 0.53
       buttontext.x = display.screenOriginX + buttontext.width * 0.55
-      buttontext.y = display.contentHeight * 0.72
-      if ( WalkThroughUtilities.getScreenHeight() == 960) then
-        buttontext.height = WalkThroughUtilities.getNewHeight(buttontext,display.contentWidth * 0.53)
-        buttontext.width = display.contentWidth * 0.53
-        buttontext.y = display.contentHeight * 0.8
-      end
-      if (WalkThroughUtilities.detectDeviceType() == "iPad") then
-        buttontext.height = WalkThroughUtilities.getNewHeight(buttontext,display.contentWidth * 0.47)
-        buttontext.width = display.contentWidth * 0.47
-        buttontext.x = display.screenOriginX + buttontext.width * 0.54
-        buttontext.y = display.contentHeight * 0.83
+
+      if (system.getInfo( "platformName" ) == "Android") then
+        buttontext.y = display.contentHeight * 0.76
+      else
+        buttontext.y = display.contentHeight * 0.72
+        if ( WalkThroughUtilities.getScreenHeight() == 960) then
+          buttontext.height = WalkThroughUtilities.getNewHeight(buttontext,display.contentWidth * 0.53)
+          buttontext.width = display.contentWidth * 0.53
+          buttontext.y = display.contentHeight * 0.8
+        end
+        if (WalkThroughUtilities.detectDeviceType() == "iPad") then
+          buttontext.height = WalkThroughUtilities.getNewHeight(buttontext,display.contentWidth * 0.47)
+          buttontext.width = display.contentWidth * 0.47
+          buttontext.x = display.screenOriginX + buttontext.width * 0.54
+          buttontext.y = display.contentHeight * 0.83
+        end
       end
     end
 
@@ -204,21 +221,26 @@ function new( imageSet, slideBackground, top, bottom )
 			facebook_authentication = display.newImage("WalkThroughPluginLibrary/LandScape/landscape-button-facebook@3x.png")
       facebook_authentication.height = WalkThroughUtilities.getNewHeight(facebook_authentication,display.contentWidth * 0.4)
       facebook_authentication.width = display.contentWidth * 0.4
-      if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
-
+      if (system.getInfo( "platformName" ) == "Android") then
         facebook_authentication.x = display.contentWidth / 2 + facebook_authentication.width * 0.7
-        facebook_authentication.y = display.contentHeight -  facebook_authentication.height * 1.1
-
-        if (WalkThroughUtilities.detectDeviceType() == "iPad") then
-
-          facebook_authentication.height = WalkThroughUtilities.getNewHeight(facebook_authentication,display.contentWidth * 0.37)
-          facebook_authentication.width = display.contentWidth * 0.37
-          facebook_authentication.x = display.contentWidth / 2 + facebook_authentication.width * 0.67
-          facebook_authentication.y = display.contentHeight -  facebook_authentication.height * 1.1
-        end
+        facebook_authentication.y = display.contentHeight -  facebook_authentication.height * 1.5
       else
-        facebook_authentication.x = display.contentWidth / 2 + facebook_authentication.width * 0.7
-        facebook_authentication.y = display.contentHeight -  facebook_authentication.height * 1.82
+        if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
+
+          facebook_authentication.x = display.contentWidth / 2 + facebook_authentication.width * 0.7
+          facebook_authentication.y = display.contentHeight -  facebook_authentication.height * 1.1
+
+          if (WalkThroughUtilities.detectDeviceType() == "iPad") then
+
+            facebook_authentication.height = WalkThroughUtilities.getNewHeight(facebook_authentication,display.contentWidth * 0.37)
+            facebook_authentication.width = display.contentWidth * 0.37
+            facebook_authentication.x = display.contentWidth / 2 + facebook_authentication.width * 0.67
+            facebook_authentication.y = display.contentHeight -  facebook_authentication.height * 1.1
+          end
+        else
+          facebook_authentication.x = display.contentWidth / 2 + facebook_authentication.width * 0.7
+          facebook_authentication.y = display.contentHeight -  facebook_authentication.height * 1.82
+        end
       end
     end
     g:insert(facebook_authentication)
@@ -244,10 +266,15 @@ function new( imageSet, slideBackground, top, bottom )
       login_text_authentication.height = WalkThroughUtilities.getNewHeight(login_text_authentication,display.contentWidth * 0.35)
       login_text_authentication.width = display.contentWidth * 0.35
       login_text_authentication.x = buttontext.x + login_text_authentication.height
-      if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
-        login_text_authentication.y = display.contentHeight - login_text_authentication.width * 0.18
+
+      if (system.getInfo( "platformName" ) == "Android") then
+        login_text_authentication.y = display.contentHeight - login_text_authentication.width * 0.31
       else
-        login_text_authentication.y = display.contentHeight - login_text_authentication.width * 0.38
+        if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
+          login_text_authentication.y = display.contentHeight - login_text_authentication.width * 0.18
+        else
+          login_text_authentication.y = display.contentHeight - login_text_authentication.width * 0.38
+        end
       end
     end
     g:insert(login_text_authentication)
@@ -448,10 +475,14 @@ function new( imageSet, slideBackground, top, bottom )
         if WalkThroughUtilities.getOrientation() == "portrait" then
 		      webView = native.newWebView( display.contentCenterX, display.contentCenterY - 100, display.contentWidth * 0.83, display.contentHeight * 0.36 )
 		    else
-          if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
-            webView = native.newWebView( display.contentWidth - 138, display.contentCenterY - 43, display.contentWidth * 0.59, display.contentHeight * 0.52)
+          if (system.getInfo( "platformName" ) == "Android") then
+            webView = native.newWebView( display.contentWidth - 137, display.contentCenterY - 42.2, display.contentWidth * 0.58, display.contentHeight * 0.519)
           else
-            webView = native.newWebView( display.contentWidth - 138, display.contentCenterY - 50.2, display.contentWidth * 0.57, display.contentHeight * 0.495)
+            if ( WalkThroughUtilities.getScreenHeight() == 960 or (WalkThroughUtilities.detectDeviceType() == "iPad")) then
+              webView = native.newWebView( display.contentWidth - 138, display.contentCenterY - 43, display.contentWidth * 0.59, display.contentHeight * 0.52)
+            else
+              webView = native.newWebView( display.contentWidth - 138, display.contentCenterY - 50.2, display.contentWidth * 0.57, display.contentHeight * 0.495)
+            end
           end
 		    end
 				webView:request(YOUTUBE_URL )

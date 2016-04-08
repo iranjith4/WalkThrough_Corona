@@ -17,6 +17,7 @@ local laterAlertAfter = 4
 --||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 local json = require "json"
 local M = {}
+local myImages  = {}
 
 function M.firstAlertAfter()
   return getFirstAlertAfter
@@ -41,8 +42,6 @@ function M.detectDeviceType()
     return "iPhone"
   end
 end
-
-
 
 function loadTable(filename)
     local path = system.pathForFile( filename, system.DocumentsDirectory)
@@ -186,5 +185,25 @@ function M.getOrientation()
     return "portrait"
   end
 end
+
+
+--fetch Images
+function M.fetchLocalImages ()
+  -- Calling the Show WalkThrough Screens
+  if M.getOrientation() == "portrait" then
+       return  {
+        "WalkThroughPluginLibrary/Portrait/Objects/portrait-wakthrough1_bg.png",
+        "WalkThroughPluginLibrary/Portrait/Objects/portrait-wakthrough2_bg.png",
+        "WalkThroughPluginLibrary/Portrait/Objects/portrait-wakthrough3_bg.png"
+      }
+  else
+     return  {
+      "WalkThroughPluginLibrary/LandScape/landscape-wakthrough1-bg.png",
+      "WalkThroughPluginLibrary/LandScape/landscape-wakthrough2-bg.png",
+      "WalkThroughPluginLibrary/LandScape/landscape-wakthrough3-bg.png"
+    }
+  end
+end
+
 
 return M
