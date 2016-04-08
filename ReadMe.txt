@@ -6,7 +6,7 @@ How To Integrate :
     local slideView = require("WalkThroughPluginLibrary.slideView")
     local WalkThroughUtilities = require "WalkThroughPluginLibrary.WalkThroughUtilities"
 
-3. Call the bellow when ever you want :
+3. Call the bellow where ever you want :
     -- Calling the Show WalkThrough Screens
     slideView.new( WalkThroughUtilities.fetchLocalImages ())
 
