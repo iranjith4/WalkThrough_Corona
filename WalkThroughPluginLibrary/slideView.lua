@@ -25,7 +25,7 @@ module(..., package.seeall)
 
 local WalkThroughUtilities = require("WalkThroughPluginLibrary.WalkThroughUtilities")
 local YOUTUBE_URL = "https://www.youtube.com/embed/HWGtGdePGaw"
-local ThirdPartyCallLua = require "ThirdPartyCallLua"
+--local ThirdPartyCallLua = require "ThirdPartyCallLua"
 
 local screenW, screenH = display.contentWidth, display.contentHeight
 local viewableScreenW, viewableScreenH = display.viewableContentWidth, display.viewableContentHeight
@@ -65,7 +65,7 @@ function goToAppsaholicPortal(event)
     if ( event.phase == "began" ) then
     elseif ( event.phase == "ended" ) then
         print( "Will Redirect to Appsaholic Portal" )
-        ThirdPartyCallLua.testFunction()
+       -- ThirdPartyCallLua.testFunction()
 				display.remove( g )
     end
     return true
