@@ -10,8 +10,9 @@ How To Integrate :
     -- Calling the Show WalkThrough Screens
     slideView.new( WalkThroughUtilities.fetchLocalImages ())
 
-4. Call perk-login method with in bellow function which is inside slideView.lua
+4. This much will redirect you to walkthrough view.
+
+5. Call perk-login method with in bellow function which is inside slideView.lua
   
 	function goToAppsaholicPortal(event)
   
-5. This much will redirect you to walkthrough view.
