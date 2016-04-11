@@ -15,4 +15,7 @@ How To Integrate :
 5. Call perk-login method with in bellow function which is inside slideView.lua
   
 	function goToAppsaholicPortal(event)
+
+Note:
+    On config.lua , set scale = "zoomeven"
   
