@@ -318,27 +318,6 @@ function new( imageSet, slideBackground, top, bottom )
 	    g:insert(dot3)
 
 
-	local navBar = display.newGroup()
-	--g:insert(navBar)
-
-	local navBarGraphic = display.newImage("WalkThroughPluginLibrary/Portrait/navbar.png", 0, 0, false)
---	navBar:insert(navBarGraphic)
-	navBarGraphic.x = viewableScreenW*.5
-	navBarGraphic.y = -100
-
-	imageNumberText = display.newText(defaultString, 0, 0, native.systemFontBold, 14)
-	imageNumberText:setFillColor(1, 1, 1)
-	imageNumberTextShadow = display.newText(defaultString, 0, 0, native.systemFontBold, 14)
-	imageNumberTextShadow:setFillColor(0, 0, 0,0.9)
-	--navBar:insert(imageNumberTextShadow)
-	--navBar:insert(imageNumberText)
-	imageNumberText.x = navBar.width*.5
-	imageNumberText.y = navBarGraphic.y
-	imageNumberTextShadow.x = imageNumberText.x - 1
-	imageNumberTextShadow.y = imageNumberText.y - 1
-
-	navBar.y = math.floor(navBar.height*0.0)
-
 	imgNum = 1
 
 	g.x = 0
@@ -356,13 +335,9 @@ function new( imageSet, slideBackground, top, bottom )
 			startPos = touch.x
 			prevPos = touch.x
 
-			transition.to( navBar,  { time=200, alpha=math.abs(navBar.alpha-1) } )
-
         elseif( self.isFocus ) then
 
 			if ( phase == "moved" ) then
-
-				transition.to(navBar,  { time=400, alpha=0 } )
 
 				if tween then transition.cancel(tween) end
 
@@ -412,8 +387,6 @@ function new( imageSet, slideBackground, top, bottom )
 
 	function setSlideNumber()
 		print("setSlideNumber", imgNum .. " of " .. #images)
-		imageNumberText.text = imgNum .. " of " .. #images
-		imageNumberTextShadow.text = imgNum .. " of " .. #images
 
 		dot1:removeSelf( )
 		dot2:removeSelf( )

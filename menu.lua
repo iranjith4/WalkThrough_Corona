@@ -48,7 +48,7 @@ function scene:create( event )
     local showWalkThrough= widget.newButton(
     {
         left = display.contentCenterX / 2,
-        top = display.contentCenterY,
+        top = display.contentCenterY / 2,
         id = "showWalkThrough",
         label = "WalkThrough",
         fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
