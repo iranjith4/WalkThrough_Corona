@@ -23,5 +23,7 @@ Explains the Perk SDK usages. WalkThrough for all WOMI games.
 	```lua
   function goToAppsaholicPortal(event)```
 
+  
+
 ### Note:
     On config.lua , set scale = "zoomeven"
