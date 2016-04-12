@@ -18,7 +18,7 @@ On `config.lua` , set `scale = "zoomeven"`
     Calling the Show WalkThrough Screens
 
     ```lua
-    slideView.new( WalkThroughUtilities.fetchLocalImages ())```
+    slideView.new( WalkThroughUtilities.fetchLocalImages())```
 
 4. This much will redirect you to walkthrough view.
 
