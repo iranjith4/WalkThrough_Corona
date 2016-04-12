@@ -1,6 +1,10 @@
 ## About
 Explains the Perk SDK usages. WalkThrough for all WOMI games.
 
+### Note  
+On `config.lua` , set `scale = "zoomeven"`
+
+
 ## How To Integrate
 
 1. Copy the WalkThroughPluginLibrary folder to your corona folder.
@@ -21,6 +25,3 @@ Explains the Perk SDK usages. WalkThrough for all WOMI games.
 5. Call perk-login method with in bellow function which is inside slideView.lua
 ```lua
   function goToAppsaholicPortal(event)```
-
-### Note  
-On `config.lua` , set `scale = "zoomeven"`
